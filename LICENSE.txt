@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Copyright (c) 2018 welkiner <tianliang.black@gmail.com>
+=======
+Copyright (c) 2018  <>
+>>>>>>> Initial commit
 
 MIT License
 

@@ -1,1 +1,1 @@
-require 'cocoapods-ipub/command'
+require 'cocoapods-ipub/pod_ipub'

@@ -6,16 +6,11 @@ require 'cocoapods-ipub/gem_version.rb'
 Gem::Specification.new do |spec|
   spec.name          = 'cocoapods-ipub'
   spec.version       = CocoapodsIpub::VERSION
-<<<<<<< HEAD
   spec.authors       = ['welkiner']
   spec.email         = ['tianliang.black@gmail.com']
-=======
-  spec.authors       = ['']
-  spec.email         = ['']
->>>>>>> Initial commit
-  spec.description   = %q{A short description of cocoapods-ipub.}
-  spec.summary       = %q{A longer description of cocoapods-ipub.}
-  spec.homepage      = 'https://github.com/EXAMPLE/cocoapods-ipub'
+  spec.description   = %q{ipub plug-in.}
+  spec.summary       = %q{make a distinction between internal dependency and external dependency.}
+  spec.homepage      = 'https://github.com/welkiner/cocoapods-ipub'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)

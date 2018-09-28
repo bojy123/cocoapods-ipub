@@ -6,7 +6,7 @@ end
 
 def build
 	sh('gem build cocoapods-ipub.gemspec')
-	sh('sudo gem install cocoapods-ipub-0.0.1.gem')
+	sh('sudo gem install cocoapods-ipub-0.0.2.gem')
 end
 
 desc 'Builds the gem'

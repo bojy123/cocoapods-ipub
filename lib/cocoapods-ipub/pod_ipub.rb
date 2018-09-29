@@ -10,10 +10,57 @@ module Pod
         current_target_definition.store_ipub(name)
       end
 
-      # def use_frameworks_ipub!(flag = true)
-      #   current_target_definition.is_frameworks_ipub = true
-      #   current_target_definition.use_frameworks!(flag)
-      # end
+      def use_frameworks_ipub!(flag = true)
+        current_target_definition.use_frameworks!(flag)
+        
+        post_install do |context|
+          # podfile = Pod::Podfile.from_file("#{context.sandbox_root}/../Podfile")
+          podfile = context.podfile
+          @isFramework = false
+          podfile.target_definition_list.each do |target_definition|
+              if target_definition.uses_frameworks?
+                  @isFramework = true
+                  break
+              end
+          end
+          next unless @isFramework
+
+          @ipubFrameworks = []
+          # context.umbrella_targets[0].specs.each do | spec|
+          # puts "...ooo#{context.pod_targets}"
+          context.pod_targets.each do | pod_target|
+            # puts "...aaaa#{pod_target}"
+              if pod_target.root_spec.is_ipub
+                  @ipubFrameworks << pod_target.root_spec.name 
+              end
+          end
+          next unless @ipubFrameworks.count != 0
+          #spec.name
+          
+          
+
+          non_ipub_frameworks = 
+          context.pods_project.targets.map do |target|
+              if !target.name.include? "Pods-" and !@ipubFrameworks.include? target.name
+                                      "${PODS_CONFIGURATION_BUILD_DIR}/#{target.name}"
+              end
+          end
+          
+          context.pods_project.targets.each do |target|
+              if !target.name.include? "Pods-" and @ipubFrameworks.include? target.name
+                  str = "$(inherited) "
+                  str << non_ipub_frameworks.compact.join(" ")
+                  str << " "
+                  str << @ipubFrameworks.map { |item| item == target.name ? 
+                      nil: "${PODS_CONFIGURATION_BUILD_DIR}/#{item}" }.compact.join(" ")
+                  target.build_configurations.each do |config|
+                      config.build_settings['FRAMEWORK_SEARCH_PATHS'] = str
+                  end
+              end
+          end
+        end
+
+      end
     end
 
     class TargetDefinition

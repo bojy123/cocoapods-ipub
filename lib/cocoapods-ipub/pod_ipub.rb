@@ -10,12 +10,12 @@ module Pod
         current_target_definition.store_ipub(name)
       end
 
-      def use_frameworks_ipub!(flag = true)
-        current_target_definition.use_frameworks!(flag)
-        
-        post_install do |context|
-          # podfile = Pod::Podfile.from_file("#{context.sandbox_root}/../Podfile")
-          podfile = context.podfile
+      def use_ipub(context = nil)
+        unless context
+          raise "method need call in post_install"
+        end
+
+        podfile = context.podfile
           @isFramework = false
           podfile.target_definition_list.each do |target_definition|
               if target_definition.uses_frameworks?
@@ -23,7 +23,7 @@ module Pod
                   break
               end
           end
-          next unless @isFramework
+          return unless @isFramework
 
           @ipubFrameworks = []
           # context.umbrella_targets[0].specs.each do | spec|
@@ -34,7 +34,7 @@ module Pod
                   @ipubFrameworks << pod_target.root_spec.name 
               end
           end
-          next unless @ipubFrameworks.count != 0
+          return unless @ipubFrameworks.count != 0
           #spec.name
           
           
@@ -57,9 +57,11 @@ module Pod
                       config.build_settings['FRAMEWORK_SEARCH_PATHS'] = str
                   end
               end
+              target.build_configurations.each do |config|
+                config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENTS'] = 'NO'
+                config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
+              end
           end
-        end
-
       end
     end
 

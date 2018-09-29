@@ -37,7 +37,7 @@ module Pod
           return unless @ipubFrameworks.count != 0
           #spec.name
           
-          
+          puts "__1__#{@ipubFrameworks}"
 
           non_ipub_frameworks = 
           context.pods_project.targets.map do |target|
@@ -56,6 +56,7 @@ module Pod
                   target.build_configurations.each do |config|
                       config.build_settings['FRAMEWORK_SEARCH_PATHS'] = str
                   end
+                  puts "__2__#{target}"
               end
               target.build_configurations.each do |config|
                 config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENTS'] = 'NO'

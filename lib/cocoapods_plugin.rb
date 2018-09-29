@@ -15,6 +15,7 @@ Pod::HooksManager.register('cocoapods-ipub', :post_install) do |context, options
 
     @ipubFrameworks = []
     context.umbrella_targets[0].specs.each do | spec|
+        Pod::UI.message "...aaa#{spec}"
         if spec.is_ipub
             @ipubFrameworks << spec 
         end
@@ -23,7 +24,7 @@ Pod::HooksManager.register('cocoapods-ipub', :post_install) do |context, options
     #spec.name
     Pod::UI.message "...ooo#{@ipubFrameworks}"
 
-    
+    ipub
     context.pods_project.targets.each do |target|
         if target.name.include? "Pods-"
             target.build_configurations.each do |config|
